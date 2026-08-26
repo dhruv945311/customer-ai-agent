@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Hardcoding the key temporarily to beat the deadline
+# Hardcoded key for quick deployment
 api_key = "AQ.Ab8RN6KJ2ybdja7cg0OdscKHnBpU7rP6jEFkELph4lkAte0bAQ"
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
