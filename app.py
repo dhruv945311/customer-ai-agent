@@ -1,8 +1,8 @@
 import streamlit as st
 import google.generativeai as genai
-import os
 
-api_key = os.environ.get("GEMINI_API_KEY")
+# Hardcoding the key temporarily to beat the deadline
+api_key = "AQ.Ab8RN6KJ2ybdja7cg0OdscKHnBpU7rP6jEFkELph4lkAte0bAQ"
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -16,5 +16,5 @@ if st.button("Send") and user_input:
     try:
         response = model.generate_content(prompt)
         st.write(response.text)
-    except Exception:
-        st.write("I am experiencing technical difficulties. Please try again.")
+    except Exception as e:
+        st.write(f"Error details: {e}")
