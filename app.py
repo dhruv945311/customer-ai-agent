@@ -1,18 +1,14 @@
 import streamlit as st
 import google.generativeai as genai
-from google.oauth2.credentials import Credentials
 import os
 
-# This forces Streamlit to ignore the old secret key we saved earlier
+# Clear any stuck secrets
 if "GEMINI_API_KEY" in os.environ:
     del os.environ["GEMINI_API_KEY"]
 
 # Your AQ format token
-aq_token = "AQ.Ab8RN6K5_QlvAj16K5LXrRjgM0Tgk_j8Yxaw4dxXElocUOJQrg"
-
-# Convert the AQ token into a Google Credential object
-creds = Credentials(token=aq_token)
-genai.configure(credentials=creds)
+api_key = "AQ.Ab8RN6K5_QlvAj16K5LXrRjgM0Tgk_j8Yxaw4dxXElocUOJQrg"
+genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
