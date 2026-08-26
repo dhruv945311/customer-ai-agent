@@ -1,9 +1,14 @@
 import streamlit as st
 import google.generativeai as genai
+from google.oauth2.credentials import Credentials
 
-# Hardcoded key for quick deployment
-api_key = "AQ.Ab8RN6KJ2ybdja7cg0OdscKHnBpU7rP6jEFkELph4lkAte0bAQ"
-genai.configure(api_key=api_key)
+# Your AQ format token
+aq_token = "AQ.Ab8RN6K5_QlvAj16K5LXrRjgM0Tgk_j8Yxaw4dxXElocUOJQrg"
+
+# Convert the AQ token into a Google Credential object
+creds = Credentials(token=aq_token)
+genai.configure(credentials=creds)
+
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 st.title("Customer Support AI Agent")
@@ -17,4 +22,4 @@ if st.button("Send") and user_input:
         response = model.generate_content(prompt)
         st.write(response.text)
     except Exception as e:
-        st.write(f"Error details: {e}")
+        st.write(f"Google API Error: {e}")
