@@ -1,16 +1,9 @@
 import streamlit as st
-import google.generativeai as genai
-import os
+import requests
 
-# Clear any stuck secrets
-if "GEMINI_API_KEY" in os.environ:
-    del os.environ["GEMINI_API_KEY"]
-
-# Your AQ format token
+# Your exact AQ token
 api_key = "AQ.Ab8RN6K5_QlvAj16K5LXrRjgM0Tgk_j8Yxaw4dxXElocUOJQrg"
-genai.configure(api_key=api_key)
-
-model = genai.GenerativeModel('gemini-1.5-flash')
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
 
 st.title("Customer Support AI Agent")
 st.write("Ask me anything about our products or your recent orders!")
@@ -19,8 +12,20 @@ user_input = st.text_input("Your Message:")
 
 if st.button("Send") and user_input:
     prompt = f"You are a helpful customer support agent. Keep answers brief. Customer: {user_input}\nAgent:"
+    
+    # We build the exact payload Google expects natively
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}]
+    }
+    
     try:
-        response = model.generate_content(prompt)
-        st.write(response.text)
+        # Bypassing the SDK and sending directly to the API endpoint
+        response = requests.post(url, json=payload)
+        
+        if response.status_code == 200:
+            answer = response.json()['candidates'][0]['content']['parts'][0]['text']
+            st.write(answer)
+        else:
+            st.write(f"Direct API Error: {response.text}")
     except Exception as e:
-        st.write(f"Google API Error: {e}")
+        st.write(f"Connection Error: {e}")
